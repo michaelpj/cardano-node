@@ -454,6 +454,7 @@ readNetworkConfig (NetworkConfigFile ncf) = do
     return ncfg
       { ncByronGenesisFile = adjustGenesisFilePath (mkAdjustPath ncf) (ncByronGenesisFile ncfg)
       , ncShelleyGenesisFile = adjustGenesisFilePath (mkAdjustPath ncf) (ncShelleyGenesisFile ncfg)
+      , ncAlonzoGenesisFile = adjustGenesisFilePath (mkAdjustPath ncf) (ncAlonzoGenesisFile ncfg)
       }
 
 data NodeConfig = NodeConfig
