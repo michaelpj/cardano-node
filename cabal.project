@@ -1,4 +1,4 @@
-index-state: 2021-04-30T00:00:00Z
+index-state: 2021-07-07T00:00:00Z
 
 packages:
     cardano-api
@@ -12,6 +12,7 @@ packages:
     bench/cardano-topology
     bench/locli
     bench/tx-generator
+    plutus-example/plutus-example
     trace-forward
 
 package cardano-api
@@ -237,8 +238,10 @@ source-repository-package
   --sha256: 19sj9f4pxfjcqkdxq46kx7qiv0qw4lf670jy8jyzvkmwyjl5agwm
   subdir:
     plutus-core
+    plutus-ledger
     plutus-ledger-api
     plutus-tx
+    plutus-tx-plugin
     prettyprinter-configurable
     word-array
 
