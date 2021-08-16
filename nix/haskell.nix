@@ -63,6 +63,11 @@ let
         ];
       })
       {
+        # Tell `release-lib` what to exclude these from windows builds
+        packages.plutus-example.components.library.platforms = with lib.platforms; [ linux darwin ];
+        packages.plutus-example.components.exes.plutus-example.platforms = with lib.platforms; [ linux darwin ];
+      }
+      {
         # Needed for the CLI tests.
         # Coreutils because we need 'paste'.
         packages.cardano-cli.components.tests.cardano-cli-test.build-tools =
