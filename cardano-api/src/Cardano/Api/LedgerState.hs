@@ -20,6 +20,7 @@ module Cardano.Api.LedgerState
       )
   , initialLedgerState
   , applyBlock
+  , applyBlockWithEvents
 
     -- * Traversing the block chain
   , foldBlocks
@@ -80,6 +81,7 @@ import qualified Cardano.Ledger.Credential as Shelley.Spec
 import qualified Cardano.Ledger.Keys as Shelley.Spec
 import           Cardano.Slotting.Slot (WithOrigin (At, Origin))
 import qualified Cardano.Slotting.Slot as Slot
+import           Data.Functor.Identity (runIdentity)
 import           Network.TypedProtocol.Pipelined (Nat (..))
 import qualified Ouroboros.Consensus.Block.Abstract as Consensus
 import qualified Ouroboros.Consensus.Byron.Ledger.Block as Byron
@@ -93,6 +95,7 @@ import qualified Ouroboros.Consensus.HardFork.Combinator.AcrossEras as HFC
 import qualified Ouroboros.Consensus.HardFork.Combinator.Basics as HFC
 import qualified Ouroboros.Consensus.Ledger.Abstract as Ledger
 import qualified Ouroboros.Consensus.Ledger.Extended as Ledger
+import           Ouroboros.Consensus.Ledger.Monad (LedgerResult, lrResult, runLedgerT)
 import qualified Ouroboros.Consensus.Mempool.TxLimits as TxLimits
 import qualified Ouroboros.Consensus.Node.ProtocolInfo as Consensus
 import qualified Ouroboros.Consensus.Shelley.Eras as Shelley
@@ -577,6 +580,16 @@ newtype LedgerState = LedgerState
                     (Consensus.CardanoEras Consensus.StandardCrypto))
   }
 
+-- | Simple alias for a ledger result and any associated events.
+type LedgerStateEvents =
+  LedgerResult
+    (Shelley.LedgerState
+      (HFC.HardForkBlock
+        (Consensus.CardanoEras Shelley.StandardCrypto)))
+    (Shelley.LedgerState
+      (HFC.HardForkBlock
+        (Consensus.CardanoEras Shelley.StandardCrypto)))
+
 -- Usually only one constructor, but may have two when we are preparing for a HFC event.
 data GenesisConfig
   = GenesisCardano
@@ -864,6 +877,7 @@ envSecurityParam env = k
       = HFC.hardForkConsensusConfigK
       $ envProtocolConfig env
 
+
 -- The function 'tickThenReapply' does zero validation, so add minimal
 -- validation ('blockPrevHash' matches the tip hash of the 'LedgerState'). This
 -- was originally for debugging but the check is cheap enough to keep.
@@ -881,7 +895,22 @@ applyBlock' env oldState enableValidation block = do
   stateNew <- if enableValidation
     then tickThenApply config block stateOld
     else tickThenReapplyCheckHash config block stateOld
-  return oldState { clsState = stateNew }
+  return oldState { clsState = lrResult stateNew }
+
+applyBlockWithEvents
+  :: Env
+  -> LedgerState
+  -> Bool
+  -- ^ True to validate
+  ->  HFC.HardForkBlock
+            (Consensus.CardanoEras Consensus.StandardCrypto)
+  -> Either Text LedgerStateEvents
+applyBlockWithEvents env oldState enableValidation block = do
+  let config = envLedgerConfig env
+      stateOld = clsState oldState
+  if enableValidation
+    then tickThenApply config block stateOld
+    else tickThenReapplyCheckHash config block stateOld
 
 -- Like 'Consensus.tickThenReapply' but also checks that the previous hash from
 -- the block matches the head hash of the ledger state.
@@ -892,12 +921,11 @@ tickThenReapplyCheckHash
     -> Shelley.LedgerState
         (HFC.HardForkBlock
             (Consensus.CardanoEras Shelley.StandardCrypto))
-    -> Either Text (Shelley.LedgerState
-        (HFC.HardForkBlock
-            (Consensus.CardanoEras Shelley.StandardCrypto)))
+    -> Either Text LedgerStateEvents
 tickThenReapplyCheckHash cfg block lsb =
   if Consensus.blockPrevHash block == Ledger.ledgerTipHash lsb
-    then Right $ Ledger.tickThenReapply cfg block lsb
+    then Right . runIdentity . runLedgerT
+          $ Ledger.tickThenReapplyLedgerM cfg block lsb
     else Left $ mconcat
                   [ "Ledger state hash mismatch. Ledger head is slot "
                   , textShow
@@ -928,13 +956,11 @@ tickThenApply
     -> Shelley.LedgerState
         (HFC.HardForkBlock
             (Consensus.CardanoEras Shelley.StandardCrypto))
-    -> Either Text (Shelley.LedgerState
-        (HFC.HardForkBlock
-            (Consensus.CardanoEras Shelley.StandardCrypto)))
+    -> Either Text LedgerStateEvents
 tickThenApply cfg block lsb
   = either (Left . Text.pack . show) Right
-  $ runExcept
-  $ Ledger.tickThenApply cfg block lsb
+  $ runExcept . runLedgerT
+  $ Ledger.tickThenApplyLedgerM cfg block lsb
 
 renderByteArray :: ByteArrayAccess bin => bin -> Text
 renderByteArray =
@@ -945,4 +971,3 @@ unChainHash ch =
   case ch of
     Ouroboros.Network.Block.GenesisHash -> "genesis"
     Ouroboros.Network.Block.BlockHash bh -> BSS.fromShort (HFC.getOneEraHash bh)
-
