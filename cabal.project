@@ -108,9 +108,6 @@ package io-classes
 package cardano-ledger-alonzo-test
   tests: False
 
-package plutus-example
-  flags: +buildable
-
 -- ---------------------------------------------------------
 
 -- The two following one-liners will cut off / restore the remainder of this file (for nix-shell users):

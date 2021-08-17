@@ -31,11 +31,11 @@
   # does not work for plugins that are used by plutus-example.
   + lib.optionalString stdenv.hostPlatform.isWindows ''
     package plutus-example
-      buildable: False
+      flags: -buildable
     package plutus-ledger
-      buildable: False
+      flags: -buildable
     package plutus-tx-plugin
-      buildable: False
+      flags: -buildable
   ''
   # Needed for the Windows cabal constraint solver.
   + lib.optionalString stdenv.hostPlatform.isWindows ''
