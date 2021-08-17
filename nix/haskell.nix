@@ -32,6 +32,8 @@
   + lib.optionalString stdenv.hostPlatform.isWindows ''
     package plutus-example
       buildable: False
+    package plutus-tx-plugin
+      buildable: False
   ''
   # Needed for the Windows cabal constraint solver.
   + lib.optionalString stdenv.hostPlatform.isWindows ''
