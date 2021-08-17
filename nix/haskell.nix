@@ -76,6 +76,10 @@ let
         # Tell `release-lib` what to exclude these from windows builds
         packages.plutus-example.components.library.platforms = with lib.platforms; [ linux darwin ];
         packages.plutus-example.components.exes.plutus-example.platforms = with lib.platforms; [ linux darwin ];
+        packages.plutus-ledger.components.library.platforms = with lib.platforms; [ linux darwin ];
+        packages.plutus-ledger.components.exes.plutus-example.platforms = with lib.platforms; [ linux darwin ];
+        packages.plutus-tx-plugin.components.library.platforms = with lib.platforms; [ linux darwin ];
+        packages.plutus-tx-plugin.components.exes.plutus-example.platforms = with lib.platforms; [ linux darwin ];
       }
       {
         # Needed for the CLI tests.
