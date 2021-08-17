@@ -32,9 +32,6 @@ common project-config
                         -Wredundant-constraints
                         -Wunused-packages
 
-  if os(windows)
-    buildable:          False
-
 common maybe-Win32
   if os(windows)
      build-depends:     Win32
