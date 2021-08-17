@@ -27,6 +27,12 @@
 , cabalProjectLocal ? ''
     allow-newer: terminfo:base
   ''
+  # Disable plutus-example on Windows because Windows builds are cross-compiled which
+  # does not work for plugins that are used by plutus-example.
+  + lib.optionalString stdenv.hostPlatform.isWindows ''
+    package plutus-example
+      buildable: False
+  ''
   # Needed for the Windows cabal constraint solver.
   + lib.optionalString stdenv.hostPlatform.isWindows ''
     max-backjumps: 10000
