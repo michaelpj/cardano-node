@@ -4283,6 +4283,23 @@
         "type": "indirect"
       }
     },
+    "iohkHackage": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1649863286,
+        "narHash": "sha256-idbUlEmc63VetLoTfpcC/Cds2w9Zsoq23hrjykKOTNA=",
+        "owner": "michaelpj",
+        "repo": "byo-hackage",
+        "rev": "7a64fcc87cfe02188e82a2eb52cbbeb2e7b3eb26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michaelpj",
+        "ref": "gh-pages",
+        "repo": "byo-hackage",
+        "type": "github"
+      }
+    },
     "iohkNix": {
       "inputs": {
         "nixpkgs": [
@@ -7824,6 +7841,7 @@
         "hostNixpkgs": [
           "nixpkgs"
         ],
+        "iohkHackage": "iohkHackage",
         "iohkNix": "iohkNix_2",
         "nixTools": "nixTools",
         "nixpkgs": [

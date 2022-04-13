@@ -12,11 +12,15 @@
     nixTools = {
         url = "github:input-output-hk/nix-tools";
         flake = false;
-      };
+    };
     haskellNix = {
       url = "github:input-output-hk/haskell.nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.hackage.follows = "hackageNix";
+    };
+    iohkHackage = {
+        url = "github:michaelpj/byo-hackage/gh-pages";
+        flake = false;
     };
     utils.url = "github:numtide/flake-utils";
     iohkNix = {
@@ -67,6 +71,7 @@
     , hostNixpkgs
     , utils
     , haskellNix
+    , iohkHackage
     , iohkNix
     , plutus-apps
     , cardano-mainnet-mirror
@@ -202,6 +207,7 @@
           project = (import ./nix/haskell.nix {
             inherit (pkgs) haskell-nix gitrev;
             inherit projectPackagesExes;
+            inputMap = { "https://michaelpj.github.io/byo-hackage" = iohkHackage; };
           }).appendModule customConfig.haskellNix // {
             profiled = profiledProject;
             asserted = assertedProject;
