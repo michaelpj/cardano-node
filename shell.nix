@@ -68,7 +68,6 @@ let
     # These programs will be available inside the nix-shell.
     nativeBuildInputs = with haskellPackages; with cardanoNodePackages; [
       cardano-ping
-      cabalWrapped
       ghcid
       haskellBuildUtils
       pkgs.graphviz
@@ -97,7 +96,7 @@ let
 
     # Prevents cabal from choosing alternate plans, so that
     # *all* dependencies are provided by Nix.
-    exactDeps = true;
+    #exactDeps = true;
 
     shellHook = ''
       echo 'nix-shell top-level shellHook:  withHoogle=${toString withHoogle} profileName=${profileName} autoStartCluster=${toString autoStartCluster} workbenchDevMode=${toString workbenchDevMode}'
@@ -157,7 +156,7 @@ let
 
     # Prevents cabal from choosing alternate plans, so that
     # *all* dependencies are provided by Nix.
-    exactDeps = true;
+    #exactDeps = true;
 
     shellHook = ''
       echo "DevOps Tools" \

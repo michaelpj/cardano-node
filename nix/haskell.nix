@@ -54,14 +54,12 @@ haskell-nix.cabalProject' ({ pkgs
       hlint
       ghcid
       haskell-language-server
-      cabalWrapped
-      # we also add cabal (even if cabalWrapped will be used by default) for shell completion:
       cabal
     ];
 
     # Prevents cabal from choosing alternate plans, so that
     # *all* dependencies are provided by Nix.
-    exactDeps = true;
+    #exactDeps = true;
 
     withHoogle = true;
   };
