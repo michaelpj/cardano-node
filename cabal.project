@@ -80,13 +80,6 @@ source-repository-package
   tag: e3bb8283fc7d2e8aa374eea29426002e8dcd67a8
   --sha256: 0nf836b552asgpwn2gxwl7yd7ssdhb1wkvdqz6s4dpzqnlpyivx9
 
--- Drops an instance breaking our code. Should be released to Hackage eventually.
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/flat
-  tag: ee59880f47ab835dbd73bea0847dab7869fc20d8
-  --sha256: 1lrzknw765pz2j97nvv9ip3l1mcpf2zr4n56hwlz0rk7wq7ls4cm
-
 repository michaelpj-byo-hackage
   url: https://michaelpj.github.io/byo-hackage
   secure: True
