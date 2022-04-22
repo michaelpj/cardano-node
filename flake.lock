@@ -4286,11 +4286,11 @@
     "iohkHackage": {
       "flake": false,
       "locked": {
-        "lastModified": 1649863286,
-        "narHash": "sha256-idbUlEmc63VetLoTfpcC/Cds2w9Zsoq23hrjykKOTNA=",
+        "lastModified": 1649944651,
+        "narHash": "sha256-1j35xxqVwpmaSSf6uPywS46GrFdndioCoufyR8lOvJc=",
         "owner": "michaelpj",
         "repo": "byo-hackage",
-        "rev": "7a64fcc87cfe02188e82a2eb52cbbeb2e7b3eb26",
+        "rev": "5e22581e1fdceec58428d71810d411c995a2d8ad",
         "type": "github"
       },
       "original": {

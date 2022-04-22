@@ -132,7 +132,7 @@ library
                       , cardano-api
                       , cardano-data
                       , cardano-git-rev
-                      , cardano-crypto-class
+                      , cardano-crypto-class == 2.0.0
                       , cardano-crypto-wrapper
                       , cardano-ledger-alonzo
                       , cardano-ledger-byron
