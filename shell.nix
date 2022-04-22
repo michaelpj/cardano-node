@@ -54,7 +54,7 @@ let
     in cardanoNodeProject.shellFor {
     name = "cluster-shell";
 
-    inherit withHoogle;
+    withHoogle = false;
 
     packages = ps: builtins.attrValues (haskellLib.selectProjectPackages ps);
 

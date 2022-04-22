@@ -61,7 +61,7 @@ haskell-nix.cabalProject' ({ pkgs
     # *all* dependencies are provided by Nix.
     #exactDeps = true;
 
-    withHoogle = true;
+    withHoogle = false;
   };
   modules =
     let
