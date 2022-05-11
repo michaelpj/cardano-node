@@ -200,4 +200,4 @@ let
 
 in
 
- shell // { inherit devops; inherit dev;}
+ dev
